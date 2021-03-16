@@ -37,4 +37,11 @@ export class CarsService {
     this.cars.push(car);
     return car;
   }
+
+  deleteCar(carLicenseNumber: string): Car[] {
+    this.cars = this.cars.filter(
+      (task) => task.carLicenseNumber !== carLicenseNumber,
+    );
+    return this.cars;
+  }
 }
