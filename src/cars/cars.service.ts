@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Car, CarStatus } from './car.model';
+import { AddCarDto } from './dto/add-car.dto';
 
 @Injectable()
 export class CarsService {
@@ -9,15 +10,16 @@ export class CarsService {
     return this.cars;
   }
 
-  addCars(
-    carLicenseNumber: string,
-    Manufacturer: string,
-    Model: string,
-    city: string,
-    basePrice: number,
-    pricePerHour: number,
-    securityDeposit: number,
-  ): Car {
+  addCars(addCarDto: AddCarDto): Car {
+    const {
+      carLicenseNumber,
+      Manufacturer,
+      Model,
+      city,
+      basePrice,
+      pricePerHour,
+      securityDeposit,
+    } = addCarDto;
     const car: Car = {
       carLicenseNumber,
       Manufacturer,
