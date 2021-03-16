@@ -7,6 +7,8 @@ export interface Car {
   pricePerHour: number;
   securityDeposit: number;
   status: CarStatus;
+  bookedOn: Date | null;
+  bookedTill: Date | null;
 }
 
 export enum CarStatus {

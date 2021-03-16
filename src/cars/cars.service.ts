@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Car, CarStatus } from './car.model';
 import { AddCarDto } from './dto/add-car.dto';
+import { getCarsFilterDto } from './dto/get-cars-filter.dto';
 
 @Injectable()
 export class CarsService {
@@ -8,6 +9,17 @@ export class CarsService {
 
   getAllCars(): Car[] {
     return this.cars;
+  }
+
+  getCarsWithFilters(filterDto: getCarsFilterDto): Car[] {
+    const { status } = filterDto;
+    let cars = this.cars;
+    if (status) {
+      cars = cars.filter((car) => car.status === status);
+    } else {
+      return cars;
+    }
+    return cars;
   }
 
   getCarById(carLicenseNumber: string): Car {
@@ -29,6 +41,8 @@ export class CarsService {
       basePrice,
       pricePerHour,
       securityDeposit,
+      bookedOn,
+      bookedTill,
     } = addCarDto;
     const car: Car = {
       carLicenseNumber,
@@ -38,6 +52,8 @@ export class CarsService {
       basePrice,
       pricePerHour,
       securityDeposit,
+      bookedOn,
+      bookedTill,
       status: CarStatus.AVAILABLE,
     };
     this.cars.push(car);

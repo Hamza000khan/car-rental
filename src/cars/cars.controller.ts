@@ -6,18 +6,26 @@ import {
   Param,
   Patch,
   Post,
+  Query,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { Car, CarStatus } from './car.model';
 import { CarsService } from './cars.service';
 import { AddCarDto } from './dto/add-car.dto';
+import { getCarsFilterDto } from './dto/get-cars-filter.dto';
 
 @Controller('cars')
 export class CarsController {
   constructor(private carsService: CarsService) {}
 
   @Get()
-  getAllCars(): Car[] {
-    return this.carsService.getAllCars();
+  getCars(@Query() filterDto: getCarsFilterDto): Car[] {
+    if (Object.keys(filterDto).length) {
+      return this.carsService.getCarsWithFilters(filterDto);
+    } else {
+      return this.carsService.getAllCars();
+    }
   }
 
   @Get('/:carLicenseNumber')
@@ -28,6 +36,7 @@ export class CarsController {
   }
 
   @Post()
+  @UsePipes(ValidationPipe)
   addCar(@Body() addCarDto: AddCarDto): Car {
     return this.carsService.addCars(addCarDto);
   }
