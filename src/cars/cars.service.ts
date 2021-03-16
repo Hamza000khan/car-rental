@@ -14,6 +14,12 @@ export class CarsService {
     return this.cars.find((car) => car.carLicenseNumber === carLicenseNumber);
   }
 
+  updateCarStatus(carLicenseNumber: string, status: CarStatus): Car[] {
+    const car = this.getCarById(carLicenseNumber);
+    car.status = status;
+    return this.cars;
+  }
+
   addCars(addCarDto: AddCarDto): Car {
     const {
       carLicenseNumber,
