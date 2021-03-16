@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { Car } from './car.model';
 import { CarsService } from './cars.service';
 import { AddCarDto } from './dto/add-car.dto';
@@ -10,6 +10,13 @@ export class CarsController {
   @Get()
   getAllCars(): Car[] {
     return this.carsService.getAllCars();
+  }
+
+  @Get('/:carLicenseNumber')
+  getCarbyPlateNumber(
+    @Param('carLicenseNumber') carLicenseNumber: string,
+  ): Car {
+    return this.carsService.getCarById(carLicenseNumber);
   }
 
   @Post()

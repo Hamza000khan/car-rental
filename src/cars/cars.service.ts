@@ -10,6 +10,10 @@ export class CarsService {
     return this.cars;
   }
 
+  getCarById(carLicenseNumber: string): Car {
+    return this.cars.find((car) => car.carLicenseNumber === carLicenseNumber);
+  }
+
   addCars(addCarDto: AddCarDto): Car {
     const {
       carLicenseNumber,
