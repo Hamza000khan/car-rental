@@ -1,5 +1,5 @@
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
-import { CarStatus } from './car.model';
+import { CarStatus } from './car-status.enum';
 
 @Entity()
 export class Car extends BaseEntity {
@@ -24,11 +24,11 @@ export class Car extends BaseEntity {
   @Column()
   securityDeposit: number;
 
-  @Column()
-  bookedOn: Date;
+  //   @Column()
+  //   bookedOn: Date;
 
-  @Column()
-  bookedTill: Date;
+  //   @Column()
+  //   bookedTill: Date;
 
   @Column()
   status: CarStatus;

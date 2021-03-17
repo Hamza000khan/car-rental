@@ -22,6 +22,6 @@ export class AddCarDto {
   @IsNotEmpty()
   securityDeposit: number;
 
-  bookedOn: Date | null;
-  bookedTill: Date | null;
+  bookedOn: Date;
+  bookedTill: Date;
 }

@@ -10,7 +10,7 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { Car, CarStatus } from './car.model';
+import { Car } from './car.entity';
 import { CarsService } from './cars.service';
 import { AddCarDto } from './dto/add-car.dto';
 import { getCarsFilterDto } from './dto/get-cars-filter.dto';
@@ -20,38 +20,38 @@ import { CarStatusValidationPipe } from './pipes/cars-status-validation.pipe';
 export class CarsController {
   constructor(private carsService: CarsService) {}
 
-  @Get()
-  getCars(@Query() filterDto: getCarsFilterDto): Car[] {
-    if (Object.keys(filterDto).length) {
-      return this.carsService.getCarsWithFilters(filterDto);
-    } else {
-      return this.carsService.getAllCars();
-    }
-  }
+  //   @Get()
+  //   getCars(@Query() filterDto: getCarsFilterDto): Car[] {
+  //     if (Object.keys(filterDto).length) {
+  //       return this.carsService.getCarsWithFilters(filterDto);
+  //     } else {
+  //       return this.carsService.getAllCars();
+  //     }
+  //   }
 
   @Get('/:carLicenseNumber')
   getCarbyPlateNumber(
     @Param('carLicenseNumber') carLicenseNumber: string,
-  ): Car {
+  ): Promise<Car> {
     return this.carsService.getCarById(carLicenseNumber);
   }
 
   @Post()
   @UsePipes(ValidationPipe)
-  addCar(@Body() addCarDto: AddCarDto): Car {
+  addCar(@Body() addCarDto: AddCarDto): Promise<Car> {
     return this.carsService.addCars(addCarDto);
   }
 
-  @Patch('/:carLicenseNumber/status')
-  upadteCarStatus(
-    @Param('carLicenseNumber') carLicenseNumber: string,
-    @Body('status', CarStatusValidationPipe) status: CarStatus,
-  ) {
-    return this.carsService.updateCarStatus(carLicenseNumber, status);
-  }
+  //   @Patch('/:carLicenseNumber/status')
+  //   upadteCarStatus(
+  //     @Param('carLicenseNumber') carLicenseNumber: string,
+  //     @Body('status', CarStatusValidationPipe) status: CarStatus,
+  //   ) {
+  //     return this.carsService.updateCarStatus(carLicenseNumber, status);
+  //   }
 
-  @Delete('/:carLicenseNumber')
-  deleteCar(@Param('carLicenseNumber') carLicenseNumber: string): Car[] {
-    return this.carsService.deleteCar(carLicenseNumber);
-  }
+  //   @Delete('/:carLicenseNumber')
+  //   deleteCar(@Param('carLicenseNumber') carLicenseNumber: string): Car[] {
+  //     return this.carsService.deleteCar(carLicenseNumber);
+  //   }
 }

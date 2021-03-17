@@ -1,5 +1,5 @@
 import { BadRequestException, PipeTransform } from '@nestjs/common';
-import { CarStatus } from '../car.model';
+import { CarStatus } from '../car-status.enum';
 
 export class CarStatusValidationPipe implements PipeTransform {
   readonly allowedStatuses = [CarStatus.AVAILABLE, CarStatus.UNAVAILABLE];
