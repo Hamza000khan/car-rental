@@ -14,6 +14,7 @@ import { Car, CarStatus } from './car.model';
 import { CarsService } from './cars.service';
 import { AddCarDto } from './dto/add-car.dto';
 import { getCarsFilterDto } from './dto/get-cars-filter.dto';
+import { CarStatusValidationPipe } from './pipes/cars-status-validation.pipe';
 
 @Controller('cars')
 export class CarsController {
@@ -41,10 +42,10 @@ export class CarsController {
     return this.carsService.addCars(addCarDto);
   }
 
-  @Patch('/:carLicenseNumber/:status')
+  @Patch('/:carLicenseNumber/status')
   upadteCarStatus(
     @Param('carLicenseNumber') carLicenseNumber: string,
-    @Param('status') status: CarStatus,
+    @Body('status', CarStatusValidationPipe) status: CarStatus,
   ) {
     return this.carsService.updateCarStatus(carLicenseNumber, status);
   }

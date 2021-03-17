@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Car, CarStatus } from './car.model';
 import { AddCarDto } from './dto/add-car.dto';
 import { getCarsFilterDto } from './dto/get-cars-filter.dto';
@@ -23,7 +23,16 @@ export class CarsService {
   }
 
   getCarById(carLicenseNumber: string): Car {
-    return this.cars.find((car) => car.carLicenseNumber === carLicenseNumber);
+    const found = this.cars.find(
+      (car) => car.carLicenseNumber === carLicenseNumber,
+    );
+
+    if (!found) {
+      throw new NotFoundException(
+        `Car with Plate Number ${carLicenseNumber} not found`,
+      );
+    }
+    return found;
   }
 
   updateCarStatus(carLicenseNumber: string, status: CarStatus): Car[] {
@@ -61,8 +70,9 @@ export class CarsService {
   }
 
   deleteCar(carLicenseNumber: string): Car[] {
+    const found = this.getCarById(carLicenseNumber);
     this.cars = this.cars.filter(
-      (task) => task.carLicenseNumber !== carLicenseNumber,
+      (car) => car.carLicenseNumber !== found.carLicenseNumber,
     );
     return this.cars;
   }
