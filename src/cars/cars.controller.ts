@@ -10,6 +10,7 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import { CarStatus } from './car-status.enum';
 import { Car } from './car.entity';
 import { CarsService } from './cars.service';
 import { AddCarDto } from './dto/add-car.dto';
@@ -20,14 +21,10 @@ import { CarStatusValidationPipe } from './pipes/cars-status-validation.pipe';
 export class CarsController {
   constructor(private carsService: CarsService) {}
 
-  //   @Get()
-  //   getCars(@Query() filterDto: getCarsFilterDto): Car[] {
-  //     if (Object.keys(filterDto).length) {
-  //       return this.carsService.getCarsWithFilters(filterDto);
-  //     } else {
-  //       return this.carsService.getAllCars();
-  //     }
-  //   }
+  @Get()
+  getCars(@Query() filterDto: getCarsFilterDto): Promise<Car[]> {
+    return this.carsService.getCars(filterDto);
+  }
 
   @Get('/:carLicenseNumber')
   getCarbyPlateNumber(
@@ -42,16 +39,18 @@ export class CarsController {
     return this.carsService.addCars(addCarDto);
   }
 
-  //   @Patch('/:carLicenseNumber/status')
-  //   upadteCarStatus(
-  //     @Param('carLicenseNumber') carLicenseNumber: string,
-  //     @Body('status', CarStatusValidationPipe) status: CarStatus,
-  //   ) {
-  //     return this.carsService.updateCarStatus(carLicenseNumber, status);
-  //   }
+  @Patch('/:carLicenseNumber/status')
+  upadteCarStatus(
+    @Param('carLicenseNumber') carLicenseNumber: string,
+    @Body('status', CarStatusValidationPipe) status: CarStatus,
+  ) {
+    return this.carsService.updateCarStatus(carLicenseNumber, status);
+  }
 
-  //   @Delete('/:carLicenseNumber')
-  //   deleteCar(@Param('carLicenseNumber') carLicenseNumber: string): Car[] {
-  //     return this.carsService.deleteCar(carLicenseNumber);
-  //   }
+  @Delete('/:carLicenseNumber')
+  deleteCar(
+    @Param('carLicenseNumber') carLicenseNumber: string,
+  ): Promise<void> {
+    return this.carsService.deleteCar(carLicenseNumber);
+  }
 }

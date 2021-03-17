@@ -11,19 +11,10 @@ export class CarsService {
   constructor(
     @InjectRepository(CarRepository) private carRepository: CarRepository,
   ) {}
-  // getAllCars(): Car[] {
-  //   return this.cars;
-  // }
-  // getCarsWithFilters(filterDto: getCarsFilterDto): Car[] {
-  //   const { status } = filterDto;
-  //   let cars = this.cars;
-  //   if (status) {
-  //     cars = cars.filter((car) => car.status === status);
-  //   } else {
-  //     return cars;
-  //   }
-  //   return cars;
-  // }
+
+  async getCars(filterDto: getCarsFilterDto): Promise<Car[]> {
+    return this.carRepository.getCars(filterDto);
+  }
 
   async getCarById(carLicenseNumber: string): Promise<Car> {
     const found = await this.carRepository.findOne(carLicenseNumber);
@@ -35,40 +26,27 @@ export class CarsService {
     return found;
   }
 
-  // updateCarStatus(carLicenseNumber: string, status: CarStatus): Car[] {
-  //   const car = this.getCarById(carLicenseNumber);
-  //   car.status = status;
-  //   return this.cars;
-  // }
-
-  async addCars(addCarDto: AddCarDto): Promise<Car> {
-    const {
-      carLicenseNumber,
-      Manufacturer,
-      Model,
-      city,
-      basePrice,
-      pricePerHour,
-      securityDeposit,
-    } = addCarDto;
-    const car = new Car();
-    car.carLicenseNumber = carLicenseNumber;
-    car.Manufacturer = Manufacturer;
-    car.Model = Model;
-    car.city = city;
-    car.basePrice = basePrice;
-    car.pricePerHour = pricePerHour;
-    car.securityDeposit = securityDeposit;
-    car.status = CarStatus.AVAILABLE;
+  async updateCarStatus(
+    carLicenseNumber: string,
+    status: CarStatus,
+  ): Promise<Car> {
+    const car = await this.getCarById(carLicenseNumber);
+    car.status = status;
     await car.save();
     return car;
   }
 
-  // deleteCar(carLicenseNumber: string): Car[] {
-  //   const found = this.getCarById(carLicenseNumber);
-  //   this.cars = this.cars.filter(
-  //     (car) => car.carLicenseNumber !== found.carLicenseNumber,
-  //   );
-  //   return this.cars;
-  // }
+  async addCars(addCarDto: AddCarDto): Promise<Car> {
+    return this.carRepository.addCar(addCarDto);
+  }
+
+  async deleteCar(carLicenseNumber: string): Promise<void> {
+    const result = await this.carRepository.delete(carLicenseNumber);
+
+    if (result.affected === 0) {
+      throw new NotFoundException(
+        `Car with Plate Number ${carLicenseNumber} not found`,
+      );
+    }
+  }
 }

@@ -24,12 +24,6 @@ export class Car extends BaseEntity {
   @Column()
   securityDeposit: number;
 
-  //   @Column()
-  //   bookedOn: Date;
-
-  //   @Column()
-  //   bookedTill: Date;
-
   @Column()
   status: CarStatus;
 }
