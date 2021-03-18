@@ -1,4 +1,6 @@
-import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
+import { type, userInfo } from 'node:os';
+import { User } from 'src/auth/user.entity';
+import { BaseEntity, Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
 import { CarStatus } from './car-status.enum';
 
 @Entity()
@@ -26,4 +28,10 @@ export class Car extends BaseEntity {
 
   @Column()
   status: CarStatus;
+
+  @ManyToOne((type) => User, (user) => user.cars, { eager: false })
+  user: User;
+
+  @Column()
+  userId: number;
 }
