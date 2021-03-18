@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { isIn, IsOptional } from 'class-validator';
+import { IsOptional } from 'class-validator';
 import { CarStatus } from '../car-status.enum';
 
 export class getCarsFilterDto {

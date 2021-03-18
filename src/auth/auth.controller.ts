@@ -1,8 +1,8 @@
 import { Body, Controller, Post, ValidationPipe } from '@nestjs/common';
 import {
+  ApiBody,
   ApiCreatedResponse,
   ApiOkResponse,
-  ApiResponse,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
@@ -14,15 +14,18 @@ export class AuthController {
 
   @Post('/signup')
   @ApiCreatedResponse({ description: `User Registration` })
+  @ApiBody({ type: AuthCredentialsDto })
   signUp(
     @Body(ValidationPipe) authCredentialsDto: AuthCredentialsDto,
   ): Promise<void> {
+    console.log(authCredentialsDto);
     return this.authService.signUp(authCredentialsDto);
   }
 
   @Post('/signin')
   @ApiOkResponse({ description: `User Login` })
   @ApiUnauthorizedResponse({ description: `Invalid Credentials` })
+  @ApiBody({ type: AuthCredentialsDto })
   signIn(
     @Body(ValidationPipe) authCredentialsDto: AuthCredentialsDto,
   ): Promise<{ accesToken: string }> {

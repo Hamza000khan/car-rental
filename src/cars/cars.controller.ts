@@ -12,6 +12,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiBearerAuth, ApiCreatedResponse } from '@nestjs/swagger';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { User } from 'src/auth/user.entity';
 import { CarStatus } from './car-status.enum';
@@ -27,6 +28,7 @@ export class CarsController {
   constructor(private carsService: CarsService) {}
 
   @Get()
+  @ApiBearerAuth()
   getCars(
     @Query() filterDto: getCarsFilterDto,
     @GetUser() user: User,
@@ -35,6 +37,7 @@ export class CarsController {
   }
 
   @Get('/:carLicenseNumber')
+  @ApiBearerAuth()
   getCarbyPlateNumber(
     @Param('carLicenseNumber') carLicenseNumber: string,
     @GetUser() user: User,
@@ -43,12 +46,15 @@ export class CarsController {
   }
 
   @Post()
+  @ApiBearerAuth()
   @UsePipes(ValidationPipe)
+  @ApiCreatedResponse({ description: `Add Car` })
   addCar(@Body() addCarDto: AddCarDto, @GetUser() user: User): Promise<Car> {
     return this.carsService.addCars(addCarDto, user);
   }
 
   @Patch('/:carLicenseNumber/status')
+  @ApiBearerAuth()
   upadteCarStatus(
     @Param('carLicenseNumber') carLicenseNumber: string,
     @Body('status', CarStatusValidationPipe) status: CarStatus,
@@ -58,6 +64,7 @@ export class CarsController {
   }
 
   @Delete('/:carLicenseNumber')
+  @ApiBearerAuth()
   deleteCar(
     @Param('carLicenseNumber') carLicenseNumber: string,
     @GetUser() user: User,

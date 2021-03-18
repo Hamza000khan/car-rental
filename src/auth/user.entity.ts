@@ -20,8 +20,8 @@ export class User extends BaseEntity {
   @Column()
   password: string;
 
-  @Column()
-  phone: number;
+  //   @Column()
+  //   phone: string;
 
   @Column()
   salt: string;

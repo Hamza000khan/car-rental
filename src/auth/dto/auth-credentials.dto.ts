@@ -8,6 +8,12 @@ export class AuthCredentialsDto {
   @ApiProperty({ type: String, description: 'username' })
   username: string;
 
+  // @IsString()
+  // @MinLength(10)
+  // @MaxLength(20)
+  // @ApiProperty({ type: String, description: 'ph_number' })
+  // phone: string;
+
   @IsString()
   @MinLength(8)
   @MaxLength(20)
